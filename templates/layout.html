@@ -1,0 +1,54 @@
+{% include "material/base.html" %}
+
+{% block head %}
+{% endblock %}
+<script>
+    $(document).ready(function(){
+        $('.modal').modal();
+        $('.dropdown-trigger').dropdown();
+    });
+</script>
+
+
+<ul id="algebra" class="dropdown-content">
+    <li><a href="/algebra/biseccion">Bisección</a></li>
+    <li class="divider"></li>
+    <li><a href="/algebra/newton_raphson">Newton Raphson</a></li>
+    <li class="divider"></li>
+    <li><a href="/algebra/secante">Secante</a></li>
+    <li class="divider"></li>
+    <li><a href="/algebra/bairstow">Bairstow</a></li>
+</ul>
+<ul id="sistema_algebra" class="dropdown-content">
+    <li><a href="/sistema_algebra/jacobi">Jacobi</a></li>
+    <li class="divider"></li>
+    <li><a href="/sistema_algebra/gauss_seidel">Gauss-Seidel</a></li>
+    <li class="divider"></li>
+    <li><a href="/sistema_algebra/newton">Newton</a></li>
+</ul>
+<ul id="diferenciales" class="dropdown-content">
+    <li><a href="/diferenciales/euler">Euler</a></li>
+    <li class="divider"></li>
+    <li><a href="/diferenciales/runge-kutta-2">RK2</a></li>
+    <li class="divider"></li>
+    <li><a href="/diferenciales/runge-kutta-4">RK4</a></li>
+</ul>
+
+<nav>
+    <div class="nav-wrapper green">
+        <a href="/" class="brand-logo" style="padding-left: 20px">Metodos Numericos</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a class="dropdown-trigger" href="#" data-target="algebra">Ecuaciones Algebraicas<i
+                    class="material-icons right">arrow_drop_down</i></a></li>
+            <li><a class="dropdown-trigger" href="#" data-target="sistema_algebra">Sistema de Ecuaciones Algebraicas<i
+                    class="material-icons right">arrow_drop_down</i></a></li>
+            <li><a class="dropdown-trigger" href="#" data-target="diferenciales">Ecuaciones Diferenciales<i
+                    class="material-icons right">arrow_drop_down</i></a></li>
+        </ul>
+    </div>
+</nav>
+
+<body>
+    {% block body %}
+    {% endblock %}
+</body>

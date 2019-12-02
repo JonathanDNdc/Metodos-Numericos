@@ -1,0 +1,171 @@
+{% extends "layout.html" %}
+
+{% block head %}
+
+    <title>{{ metodo }}</title>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    TeX: {
+        equationNumbers: {  autoNumber: "AMS"  },
+        extensions: ["AMSmath.js", "AMSsymbols.js", "autobold.js", "color.js"],
+        }
+    });
+    </script>
+    <script type="text/javascript"
+     src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script>
+
+        let orden = 1;
+
+        function orden1(){
+            document.getElementById("f2").disabled = true;
+            document.getElementById("y2").disabled = true;
+            orden = "orden1"
+        }
+
+        function orden2(){
+            document.getElementById("f2").disabled = false;
+            document.getElementById("y2").disabled = false;
+            orden = "orden2"
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            if("{{ order }}" === "orden1"){
+                document.getElementById("orden1").checked = true;
+                orden1()
+
+            } else if("{{ order }}" === "orden2"){
+                document.getElementById("orden2").checked = true;
+                orden2()
+            }
+
+            if (Boolean({{ load_img }})) {
+                document.getElementById('graph_row').style.display = "block";
+            }
+        });
+
+        function handleClick(myRadio) {
+            if(myRadio.id === "orden1"){
+                orden1()
+            } else if(myRadio.id === "orden2"){
+                orden2()
+            }
+        }
+
+        function calculate_btn(){
+            let f1 = document.getElementById("f1").value;
+            f1 = f1.replace(new RegExp('/', 'g'), '|');
+            let y1 = document.getElementById("y1").value;
+            let x0 = document.getElementById("x0").value;
+            let xn = document.getElementById("xn").value;
+            let h = document.getElementById("h").value;
+
+            let f2 = 1;
+            let y2 = 1;
+
+            if(orden === "orden2"){
+                f2 = document.getElementById("f2").value;
+                f2 = f2.replace(new RegExp('/', 'g'), '|');
+                y2 = document.getElementById("y2").value;
+            }
+
+            if(f1 && y1 && f2 && y2 && x0 && xn && h){
+                window.location.href = "/diferenciales/{{ metodo }}/" + f1 + "/" + y1 + "/" + f2 + "/" + y2
+                    + "/" + x0 + "/" + xn + "/" + h + "/" + orden
+            }
+        }
+    </script>
+
+{% endblock %}
+
+
+{% block body %}
+
+        <h1 class="center">
+        <a href="/diferenciales/{{ metodo }}" style="color: #212121; text-decoration: none;">
+            {{ metodo.replace("_", " ").title() }}
+        </a>
+    </h1>
+
+    <form action="#" class="row">
+        <p>
+            <label class="col s6 right-align">
+                <input class="with-gap" name="group1" type="radio" id="orden1" onclick="handleClick(this)"/>
+                <span>Primer orden</span>
+            </label>
+        </p>
+        <p>
+            <label class="col s6 left-align">
+                <input class="with-gap" name="group1" type="radio" id="orden2" onclick="handleClick(this)"/>
+                <span>Segundo orden</span>
+            </label>
+        </p>
+     </form>
+
+    <!-- INPUT FIELDS -->
+
+    <div class="row">
+        <div class="input-field col s8">
+            <input value="{{ f1 }}" placeholder="2*y1 + 3*y2 + 4*x" id="f1" type="text">
+            <label for="f1">F1</label>
+        </div>
+        <div class="input-field col s4">
+            <input value="{{ y1 }}" id="y1" type="number" step="any" class="validate">
+            <label for="y1">y1</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s8">
+            <input value="{{ f2 }}" placeholder="2*y1 + 3*y2 + 4*x" id="f2" type="text">
+            <label for="f2">F2</label>
+        </div>
+        <div class="input-field col s4">
+            <input value="{{ y2 }}" id="y2" type="number" step="any" class="validate">
+            <label for="y2">y2</label>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="input-field col s4">
+            <input value="{{ x0 }}" id="x0" type="number" step="any" class="validate">
+            <label for="x0">x0</label>
+        </div>
+        <div class="input-field col s4">
+            <input value="{{ xn }}" id="xn" type="number" step="any" class="validate">
+            <label for="xn">xn</label>
+        </div>
+        <div class="input-field col s4">
+            <input value="{{ h }}" id="h" type="number" min="0" class="validate">
+            <label for="h">h</label>
+        </div>
+    </div>
+
+
+    <!-- BUTTONS -->
+
+    <div class="row">
+        <div class="col s12 center-align">
+            <a class="waves-effect waves-light btn-large" onclick="calculate_btn()">Calcular</a>
+        </div>
+    </div>
+    <br>
+
+    <!-- IMAGES -->
+
+    <div class="row" id="graph_row" style="display:none">
+        <img id="func_graph" class="col s6" alt="" src="{{ url_for('static', filename='images/my_fig.png') }}">
+    </div>
+
+    <div style="text-align: center" id="answer">
+        $$\LARGE{
+        {{ latex }}
+        }$$
+    </div>
+    <br>
+
+
+{% endblock %}

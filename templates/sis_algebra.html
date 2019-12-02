@@ -1,0 +1,150 @@
+{% extends "layout.html" %}
+
+{% block head %}
+
+    <title>{{ metodo }}</title>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    TeX: {
+        equationNumbers: {  autoNumber: "AMS"  },
+        extensions: ["AMSmath.js", "AMSsymbols.js", "autobold.js", "color.js"],
+        }
+    });
+    </script>
+    <script type="text/javascript"
+     src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if ("{{ metodo }}" === "jacobi" || "{{ metodo }}" === "gauss_seidel") {
+                document.getElementById('func').placeholder = "2*x + 3*y + 4, 5*x + 6*y - 7"
+            } else if ("{{ metodo }}" === "newton") {
+                document.getElementById('func').placeholder = "ln(x) + sin(pi*x) + E^(2*x)"
+            }
+
+            if (!Boolean({{ load_img }})) {
+                document.getElementById('graph_row').style.display = "block";
+            }
+        });
+
+        function calculate_btn(){
+            let func = document.getElementById("func").value;
+            func = func.replace(new RegExp('/', 'g'), '|');
+            let vars = document.getElementById("vars0").value;
+
+            let lx = document.getElementById("lx").value;
+            let ux = document.getElementById("ux").value;
+            let ly = document.getElementById("ly").value;
+            let uy = document.getElementById("uy").value;
+            let lz = document.getElementById("lz").value;
+            let uz = document.getElementById("uz").value;
+            let err = document.getElementById("err").value;
+
+            if(func && vars && lx && ux && ly && uy && lz && uz && err){
+                window.location.href = "/sistema_algebra/{{ metodo }}/" + func + "/" +  vars +
+                    "/" + err + "/250/" + lx + "/" + ux + "/" + ly + "/" + uy + "/" + lz + "/" + uz + "/{{ res }}"
+            }
+        }
+    </script>
+
+{% endblock %}
+
+
+{% block body %}
+
+    <h1 class="center">
+        <a href="/sistema_algebra/{{ metodo }}" style="color: #212121; text-decoration: none;">
+            {{ metodo.replace("_", " ").title() }}
+        </a>
+    </h1>
+
+    <!-- INPUT FIELDS -->
+
+    <div class="row">
+        <div class="input-field col s8">
+            <input value="{{ func }}" placeholder="" id="func" type="text">
+            <label for="func">Funciones</label>
+        </div>
+
+        <div class="input-field col s2">
+            <input value="{{ vars0 }}" placeholder="x = 0, y = 0" id="vars0" type="text">
+            <label for="vars0">Aproximación inicial</label>
+        </div>
+
+        <div class="input-field col s2">
+            <input value="{{ err }}" placeholder="" id="err" type="text">
+            <label for="err">Tolerancia</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s2">
+            <input value="{{ lx }}" placeholder="" id="lx" type="text">
+            <label for="lx">lx</label>
+        </div>
+
+        <div class="input-field col s2">
+            <input value="{{ ux }}" placeholder="" id="ux" type="text">
+            <label for="ux">ux</label>
+        </div>
+
+        <div class="input-field col s2">
+            <input value="{{ ly }}" placeholder="" id="ly" type="text">
+            <label for="ly">ly</label>
+        </div>
+
+        <div class="input-field col s2">
+            <input value="{{ uy }}" placeholder="" id="uy" type="text">
+            <label for="uy">uy</label>
+        </div>
+
+        <div class="input-field col s2">
+            <input value="{{ lz }}" placeholder="" id="lz" type="text">
+            <label for="lz">lz</label>
+        </div>
+
+        <div class="input-field col s2">
+            <input value="{{ uz }}" placeholder="" id="uz" type="text">
+            <label for="uz">uz</label>
+        </div>
+    </div>
+
+
+    <!-- BUTTONS -->
+
+    <div class="row">
+        <div class="col s12 center-align">
+            <a class="waves-effect waves-light btn-large" onclick="calculate_btn()">Calcular</a>
+        </div>
+    </div>
+    <br>
+
+    <!-- IMAGES -->
+
+    <div class="row" id="graph_row" style="display:none">
+        <img id="func_graph" class="col s6" alt="" src="{{ url_for('static', filename='images/my_fig.png') }}">
+    </div>
+
+    <div style="text-align: center" id="answer">
+        $$
+            \LARGE{
+                \begin{gather*}
+                    {{ latex }}
+                    {% if ans_vars is not string %}
+                        {% for key,value in ans_vars.items() %}
+                            ~\\ ~\\ {{ key }} = {{ value }}
+                        {% endfor %}
+                    {% else %}
+                        ~\\ ~\\
+                        \mbox{
+                            {{ ans_vars }}
+                        }
+                    {% endif %}
+                \end{gather*}
+            }
+        $$
+    </div>
+    <br>
+
+{% endblock %}

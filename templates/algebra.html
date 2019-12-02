@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <title>{{ metodo }}</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if ("{{ metodo }}" === "biseccion" || "{{ metodo }}" === "secante") {
+                document.getElementById('c').style.display = "block";
+                document.getElementById('cc').innerHTML = "x0";
+                document.getElementById('d').style.display = "block";
+                document.getElementById('dc').innerHTML = "x1";
+                document.getElementById('dc').style.display = "block";
+            } else if ("{{ metodo }}" === "newton_raphson") {
+                document.getElementById('c').style.display = "block";
+                document.getElementById('cc').innerHTML = "xi";
+            } else if ("{{ metodo }}" === "bairstow") {
+                document.getElementById('c').style.display = "block";
+                document.getElementById('cc').innerHTML = "r";
+                document.getElementById('d').style.display = "block";
+                document.getElementById('dc').innerHTML = "s";
+                document.getElementById('dc').style.display = "block";
+                document.getElementById('func').placeholder = "5*x^4 + 3*x^2 + x - 31"
+
+            }
+
+            if (Boolean({{ load_img }})) {
+                document.getElementById('graph_row').style.display = "block";
+            }
+
+        });
+
+        function calculate_btn() {
+
+            let c = false;
+            let d = false;
+
+            if ("{{ metodo }}" === "biseccion" || "{{ metodo }}" === "secante" || "{{ metodo }}" === "bairstow") {
+                c = document.getElementById("c").value;
+                d = document.getElementById("d").value;
+            } else if ("{{ metodo }}" === "newton_raphson") {
+                c = document.getElementById("c").value;
+                d = true;
+            }
+
+            let func = document.getElementById("func").value;
+            func = func.replace(new RegExp('/', 'g'), '|');
+            let a = document.getElementById("lim_inf").value;
+            let b = document.getElementById("lim_sup").value;
+            let err = document.getElementById("err").value;
+
+            if (func && a && b && c && d && err) {
+                document.getElementById('func_graph').src = "{{ url_for('static', filename='images/my_fig.png')}}";
+                window.location.href = "/algebra/{{ metodo }}/" + func + "/" + a + "/" + b + "/"
+                    + c + "/" + d + "/" + err + "/" + "{{ e }}";
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="center">
+        <a href="/algebra/{{ metodo }}" style="color: #212121; text-decoration: none;">
+            {{ metodo.replace("_", " ").title() }}
+        </a>
+    </h1>
+
+    <!-- INPUT FIELDS -->
+
+    <div class="row">
+        <div class="input-field col s12">
+            <input value="{{ str_func }}" placeholder="ln(x) + sin(pi*x) + E^(2*x)" id="func" type="text">
+            <label for="func">Función</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s6">
+            <input value="{{ lim_inf }}" id="lim_inf" type="number" step="any" class="validate">
+            <label for="lim_inf">Limite inferior</label>
+        </div>
+
+        <div class="input-field col s6">
+            <input value="{{ lim_sup }}" id="lim_sup" type="number" step="any" class="validate">
+            <label for="lim_sup">Limite superior</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s6">
+            <input value="{{ c }}" id="c" type="number" step="any" class="validate" style="display: none">
+            <label id="cc" for="c">r</label>
+        </div>
+
+        <div class="input-field col s6">
+            <input value="{{ d }}" id="d" type="number" step="any" class="validate" style="display: none">
+            <label id="dc" for="d" style="display: none">s</label>
+        </div>
+    </div>
+
+        <div class="row">
+        <div class="input-field col s6">
+            <input value="{{ err }}" id="err" type="number" step="any" class="validate">
+            <label id="err" for="err">Tolerancia</label>
+        </div>
+    </div>
+
+    <!-- BUTTONS -->
+
+    <div class="row">
+        <div class="col s12 center-align">
+            <a class="waves-effect waves-light btn-large" onclick="calculate_btn()">Calcular</a>
+        </div>
+    </div>
+
+    <!-- IMAGES -->
+
+    <div class="row" id="graph_row" style="display:none">
+        <img id="func_graph" class="col s6" alt="" src="{{ url_for('static', filename='images/my_fig.png') }}">
+        <p class="flow-text col s6 center">Raíz: {{ ans_root }}</p>
+    </div>
+{% endblock %}

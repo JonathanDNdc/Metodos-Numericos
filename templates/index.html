@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <title>Inicio</title>
+{% endblock %}
+
+{% block body %}
+    <br>
+    <div class="row container">
+        <div class="col s12">
+            <div class="card-panel">
+                <h4 class="center-align">Raices de ecuaciones no lineales</h4>
+                <div class="collection">
+                    <a href="/algebra/biseccion" class="collection-item center-align">Metodo de Bisección</a>
+                    <a href="/algebra/newton_raphson" class="collection-item center-align">Metodo de Newton Raphson</a>
+                    <a href="/algebra/secante" class="collection-item center-align">Metodo de Secante</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row container">
+        <div class="col s12">
+            <div class="card-panel">
+                <h4 class="center-align">Raices de polinomios</h4>
+                <div class="collection">
+                    <a href="/algebra/bairstow" class="collection-item center-align">Metodo de Bairstow</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row container">
+        <div class="col s12">
+            <div class="card-panel">
+                <h4 class="center-align">Sistema de ecuaciones lineales</h4>
+                <div class="collection">
+                    <a href="/sistema_algebra/jacobi" class="collection-item center-align">Metodo de Jacobi</a>
+                    <a href="/sistema_algebra/gauss_seidel" class="collection-item center-align">Metodo de Gauss-Seidel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row container">
+        <div class="col s12">
+            <div class="card-panel">
+                <h4 class="center-align">Sistema de ecuaciones no lineales</h4>
+                <div class="collection">
+                    <a href="/sistema_algebra/newton" class="collection-item center-align">Metodo de Newton</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row container">
+        <div class="col s12">
+            <div class="card-panel">
+                <h4 class="center-align">Ecuaciones diferenciales ordinarias</h4>
+                <div class="collection">
+                    <a href="/diferenciales/euler" class="collection-item center-align">Metodo de Euler</a>
+                    <a href="/diferenciales/runge-kutta-2" class="collection-item center-align"> Metodo de Runge-Kutta Segundo Orden</a>
+                    <a href="/diferenciales/runge-kutta-4" class="collection-item center-align">Metodo de Runge-Kutta Cuarto Orden</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
