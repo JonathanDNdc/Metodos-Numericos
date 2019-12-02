@@ -44,7 +44,7 @@ def algebra(metodo, str_func="", lim_inf="", lim_sup="", ans_root="", c="", d=""
 @app.route('/sistema_algebra/<metodo>')
 def sis_algebra(metodo, func="", vars0="", err="0.001", it="250",
                 lx="-10", ux="10", ly="-10", uy="10", lz="-10", uz="10", res="1",
-                latexstring="", ans_vars="", load_img=0):
+                latexstring="", ans_vars="", load_img=1):
     if metodo in sis_agebra_methods:
         return render_template("sis_algebra.html", metodo=metodo, func=func, vars0=vars0, err=err, it=it,
                                lx=lx, ux=ux, ly=ly, uy=uy, lz=lz, uz=uz, res=res,
