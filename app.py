@@ -63,10 +63,11 @@ def diferenciales(metodo, x0="", xn="", y1="", y2="", f1="", f2="", h="", order=
 def graph(metodo, str_func, x0, x1, c, d, err, e):
     str_func = scFunc.slashconverter(str_func)
     scFunc.graph(str_func, float(x0), float(x1))
+    load_img = 1
     if metodo == "biseccion":
-        ans_root = mb.biseccion(str_func, float(c), float(d), float(err))
+        ans_root, load_img = mb.biseccion(str_func, float(c), float(d), float(err))
     elif metodo == "secante":
-        ans_root = ms.secante(str_func, float(c), float(d), float(err), float(e))
+        ans_root, load_img = ms.secante(str_func, float(c), float(d), float(err), float(e))
     elif metodo == "newton_raphson":
         ans_root = mnr.newton_raphson(str_func, float(c), float(err), float(e))
     elif metodo == "bairstow":
@@ -74,9 +75,10 @@ def graph(metodo, str_func, x0, x1, c, d, err, e):
             ans_root = mbs.bairstow(float(c), float(d), Poly(str_func).all_coeffs(), float(err))
         except PolynomialError:
             ans_root = "Funcion no polinomial"
+            load_img = 0
     else:
         ans_root = 0
-    return algebra(metodo, str_func, x0, x1, ans_root, c, d, e, err, 1)
+    return algebra(metodo, str_func, x0, x1, ans_root, c, d, e, err, load_img)
 
 
 @app.route('/sistema_algebra/<metodo>/<func>/<vars0>/<err>/<it>/<lx>/<ux>/<ly>/<uy>/<lz>/<uz>/<res>')
@@ -108,7 +110,7 @@ def lateximg_graph(metodo, func, vars0, err, it, lx, ux, ly, uy, lz, uz, res):
             ans_vars, variables, mat, funciones = mn.newton(func, vars0, float(err), float(it))
             latexstring = "J = " + scFunc.matrix2latex(mat)
 
-    except (ValueError, IndexError) as ex_error:
+    except (ValueError, IndexError, NameError) as ex_error:
         ans_vars = "Error de sintaxis"
 
     flag = scFunc.graph_implicit(funciones, variables, ans_vars, lx, ux, ly, uy, lz, uz, res)
@@ -130,6 +132,7 @@ def diferenciales_latex(metodo, f1, y1, f2, y2, x0, xn, h, order):
         xlist = []
         y1list = []
         y2list = []
+        flag = 0
 
         if metodo == "euler":
             xlist, y1list, y2list = me.euler(x0, xn, y1, y2, f1, f2, h, order)
@@ -144,10 +147,10 @@ def diferenciales_latex(metodo, f1, y1, f2, y2, x0, xn, h, order):
             y11 = y1list[-1]
             y21 = y2list[-1]
         latexstring = scFunc.diff2latex(xn, y11, y21, h, order)
-        scFunc.plotdiferencial(xlist, y1list, y2list, order)
-    except (SyntaxError, ValueError, TypeError, ZeroDivisionError) as ex_error:
+        flag = scFunc.plotdiferencial(xlist, y1list, y2list, order)
+    except:
         latexstring = "\\mbox{Error de sintaxis}"
-    return diferenciales(metodo, x0, xn, y1, y2, f1, f2, h, order, latexstring, 1)
+    return diferenciales(metodo, x0, xn, y1, y2, f1, f2, h, order, latexstring, flag)
 
 
 if __name__ == '__main__':

@@ -24,7 +24,7 @@
             }
 
             if (!Boolean({{ load_img }})) {
-                document.getElementById('graph_row').style.display = "block";
+                document.getElementById('func_graph').style.display = "block";
             }
         });
 
@@ -122,28 +122,28 @@
 
     <!-- IMAGES -->
 
-    <div class="row" id="graph_row" style="display:none">
-        <img id="func_graph" class="col s6" alt="" src="{{ url_for('static', filename='images/my_fig.png') }}">
-    </div>
-
-    <div style="text-align: center" id="answer">
-        $$
-            \LARGE{
-                \begin{gather*}
-                    {{ latex }}
-                    {% if ans_vars is not string %}
-                        {% for key,value in ans_vars.items() %}
-                            ~\\ ~\\ {{ key }} = {{ value }}
-                        {% endfor %}
-                    {% else %}
-                        ~\\ ~\\
-                        \mbox{
-                            {{ ans_vars }}
-                        }
-                    {% endif %}
-                \end{gather*}
-            }
-        $$
+    <div class="row">
+        <img id="func_graph" style="display:none" class="col s6" alt=""
+             src="{{ url_for('static', filename='images/my_fig.png') }}">
+        <div style="text-align: center" id="answer">
+            $$
+                \LARGE{
+                    \begin{gather*}
+                        {{ latex }}
+                        {% if ans_vars is not string %}
+                            {% for key,value in ans_vars.items() %}
+                                ~\\ ~\\ {{ key }} = {{ value }}
+                            {% endfor %}
+                        {% else %}
+                            ~\\ ~\\
+                            \mbox{
+                                {{ ans_vars }}
+                            }
+                        {% endif %}
+                    \end{gather*}
+                }
+            $$
+        </div>
     </div>
     <br>
 

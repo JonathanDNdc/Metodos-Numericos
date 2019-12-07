@@ -24,7 +24,7 @@
             }
 
             if (Boolean({{ load_img }})) {
-                document.getElementById('graph_row').style.display = "block";
+                document.getElementById('func_graph').style.display = "block";
             }
 
         });
@@ -115,8 +115,9 @@
 
     <!-- IMAGES -->
 
-    <div class="row" id="graph_row" style="display:none">
-        <img id="func_graph" class="col s6" alt="" src="{{ url_for('static', filename='images/my_fig.png') }}">
+    <div class="row">
+        <img id="func_graph" style="display:none" class="col s6" alt=""
+             src="{{ url_for('static', filename='images/my_fig.png') }}">
         <p class="flow-text col s6 center">Raíz: {{ ans_root }}</p>
     </div>
 {% endblock %}

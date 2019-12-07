@@ -9,8 +9,11 @@ def newton_raphson(str_func, xi, acc_error=0.000000001, itn=250):
     while eps > acc_error:
         it += 1
 
-        fxi0 = float(f(str_func, xi[0]))
-        dfxi0 = float(f(diff(str_func), xi[0]))
+        try:
+            fxi0 = float(f(str_func, xi[0]))
+            dfxi0 = float(f(diff(str_func), xi[0]))
+        except TypeError:
+            return "Intenta con nuevos valores iniciales"
         if dfxi0 == 0:
             return "Intenta con nuevos valores iniciales"
 
@@ -25,4 +28,4 @@ def newton_raphson(str_func, xi, acc_error=0.000000001, itn=250):
         if it > itn:
             return "No converge"
 
-    return round(xi[1], 4)
+    return round(xi[1], 6)

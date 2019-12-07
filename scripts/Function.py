@@ -46,17 +46,20 @@ def graph(str_func, a, b):
 
 
 def graph_implicit(func, variables, point1, lx=-10, ux=10, ly=-10, uy=10, lz=-10, uz=10, res=1):
-    flag = 1
-    if type(point1) == str:
-        point1 = False
-    else:
-        point1 = list(point1.values())
-    variables = list(variables)
-    if len(variables) == 2:
-        flag = plot2dfuncs(func[0], func[1], variables, point1, lx, ux, ly, uy)
-    elif len(variables) == 3:
-        flag = plot3funcs(func[0], func[1], func[2], variables, point1, lx, ux, ly, uy, lz, uz, res)
-    return flag
+    try:
+        flag = 1
+        if type(point1) == str:
+            point1 = False
+        else:
+            point1 = list(point1.values())
+        variables = list(variables)
+        if len(variables) == 2:
+            flag = plot2dfuncs(func[0], func[1], variables, point1, lx, ux, ly, uy)
+        elif len(variables) == 3:
+            flag = plot3funcs(func[0], func[1], func[2], variables, point1, lx, ux, ly, uy, lz, uz, res)
+        return flag
+    except:
+        return 1
 
 
 def plot3funcs(func1, func2, func3, variables, point1, lx=-10, ux=10, ly=-10, uy=10, lz=-10, uz=10, res=1.0):
@@ -73,6 +76,10 @@ def plot3funcs(func1, func2, func3, variables, point1, lx=-10, ux=10, ly=-10, uy
         values1 = f1(x, y, z)
         values2 = f2(x, y, z)
         values3 = f3(x, y, z)
+
+        values1[np.isinf(values1)] = np.nan
+        values2[np.isinf(values2)] = np.nan
+        values3[np.isinf(values3)] = np.nan
 
         fig = mlab.figure(size=(720, 720), bgcolor=(1, 1, 1), fgcolor=(0, 0, 0))
         mlab.contour3d(x, y, z, values1, figure=fig, contours=[0], color=(1, 0, 0))
@@ -98,10 +105,11 @@ def plot2dfuncs(func1, func2, variables, point1, lx=-10, ux=10, ly=-10, uy=10):
 
         fimp1 = lambdify(variables, func1, "numpy")
         fimp2 = lambdify(variables, func2, "numpy")
+
         ax.set_xlabel(variables[0])
         ax.set_ylabel(variables[1])
-        ax.contour(x, y, fimp1(x, y), [0])
-        ax.contour(x, y, fimp2(x, y), [0])
+        ax.contour(x, y, fimp1(x, y), [0], colors="r")
+        ax.contour(x, y, fimp2(x, y), [0], colors="g")
         if point1:
             ax.plot(point1[0], point1[1], "o")
         ax.set_aspect('equal', 'datalim')
@@ -126,8 +134,9 @@ def plotdiferencial(x, y1, y2, order):
             ax2.set(xlabel='x', ylabel='y2')
 
         plt.savefig('static/images/my_fig.png')
+        return 1
     except:
-        pass
+        return 0
 
 
 def has_linear_solution(m):

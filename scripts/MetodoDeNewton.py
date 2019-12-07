@@ -3,7 +3,6 @@ import scripts.Matrices as mt
 
 
 def newton(funciones_str, initials_str, err=0.000000001, itn=250):
-    nan_flag = False
     initials = {}
     for i in initials_str.split(","):
         initials[i.split("=")[0].strip()] = float(i.split("=")[1].strip())
@@ -43,6 +42,6 @@ def newton(funciones_str, initials_str, err=0.000000001, itn=250):
             return "No converge", initials, mat_jac_latex, funciones
 
     for key, value in initials.items():
-        initials[key] = round(value, 6)
-        
+        initials[key] = round(float(value), 6)
+
     return initials, initials, mat_jac_latex, funciones

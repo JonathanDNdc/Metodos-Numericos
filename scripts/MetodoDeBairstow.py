@@ -87,4 +87,4 @@ def bairstow(r, s, coeffs_a, acc_error=0.000000001, roots=None):
     elif len(coeffs_b) == 2:
         roots.append(linear(coeffs_b[0], coeffs_b[1]))
 
-    return [i.round(4) for i in roots]
+    return [i.round(6) for i in roots]

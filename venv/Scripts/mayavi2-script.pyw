@@ -1,4 +1,4 @@
-#!C:\Users\jd_19\PycharmProjects\MetodosNumericos_Proyecto\venv\Scripts\pythonw.exe
+#!C:\Users\jd_19\PycharmProjects\MetodosNumericos_Proyecto\venv1\Scripts\pythonw.exe
 # EASY-INSTALL-ENTRY-SCRIPT: 'mayavi==4.7.1','gui_scripts','mayavi2'
 __requires__ = 'mayavi==4.7.1'
 import re

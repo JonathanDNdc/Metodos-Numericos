@@ -7,6 +7,8 @@ def xrf(xl, xu):
 
 def biseccion(str_func, xl, xu, acc_error=0.000000001):
     try:
+        if xl * xu > 0:
+            return "Elige dos puntos de signos opuestos", 1
         xr = [xrf(xl, xu)] * 2
         eps = acc_error + 1
 
@@ -21,12 +23,12 @@ def biseccion(str_func, xl, xu, acc_error=0.000000001):
             try:
                 eps = abs((xr[1] - xr[0]) / xr[1])
             except ZeroDivisionError:
-                return 0
+                return 0, 1
 
-        return round(xr[1], 4)
+        return round(xr[1], 6), 1
 
     except TypeError:
-        return "Dominio invalido"
+        return "Dominio invalido", 0
     except SympifyError:
-        return "Error de sintaxis"
+        return "Error de sintaxis", 0
 
